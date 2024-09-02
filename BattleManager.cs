@@ -138,7 +138,7 @@ public class BattleManager : MonoBehaviour
 
         bool actionTaken = false;
         float actualDamage = 0f;
-
+        GameObject heroobject = GameObject.Find("Wizard");
         switch (action)
         {
             case "Attack":
@@ -146,6 +146,7 @@ public class BattleManager : MonoBehaviour
                 actualDamage = Mathf.Max(hero.attackPower - monster.defense, 0);
                 LogMessage($"英雄使用了普通攻击");
                 monster.TakeDamage(actualDamage);
+                heroobject.GetComponent<Animator>().SetTrigger("Attack");
                 actionTaken = true;
                 break;
             case "Skill":
@@ -168,6 +169,7 @@ public class BattleManager : MonoBehaviour
                     }
 
                     actionTaken = hero.UseSkill(skill, monster);
+                    
                     if (actionTaken)
                     {
                         LogMessage($"英雄使用了技能 {skill.name}");
@@ -177,6 +179,8 @@ public class BattleManager : MonoBehaviour
                             case "火球术":
                                 actualDamage = Mathf.Max(skill.damage - monster.defense, 0);
                                 monster.TakeDamage(actualDamage);
+                                
+                                heroobject.GetComponent<Animator>().SetTrigger("Attack");
                                 if (Random.value < 0.4f || monster.BurnTurnsRemaining > 0)
                                 {
                                     monster.ApplyBurn();
@@ -193,6 +197,8 @@ public class BattleManager : MonoBehaviour
                             case "冰锥":
                                 actualDamage = Mathf.Max(skill.damage - monster.defense, 0);
                                 monster.TakeDamage(actualDamage);
+                                
+                                heroobject.GetComponent<Animator>().SetTrigger("Attack");
                                 if (Random.value < 0.5f)
                                 {
                                     monster.ApplyFreeze();
@@ -202,6 +208,8 @@ public class BattleManager : MonoBehaviour
                             case "雷击":
                                 actualDamage = Mathf.Max(skill.damage - monster.defense, 0);
                                 monster.TakeDamage(actualDamage);
+
+                                heroobject.GetComponent<Animator>().SetTrigger("Attack");
                                 bool wasElectrified = monster.IsElectrified;
                                 bool applyElectrified = Random.value < 0.3f;
 
@@ -232,6 +240,8 @@ public class BattleManager : MonoBehaviour
                             case "灵魂激流":
                                 actualDamage = Mathf.Max(hero.attackPower * 5 - monster.defense, 0);
                                 monster.TakeDamage(actualDamage);
+
+                                heroobject.GetComponent<Animator>().SetTrigger("Attack");
                                 hero.ResetRage(); // 假设你有一个重置怒气值的方法
                                 break;
                             case "治疗术":
